@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPUNGG SHOP</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#090014;
+color:white;
+overflow-x:hidden;
+}
+
+/* NAVBAR */
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px;
+background:#120020;
+position:sticky;
+top:0;
+z-index:999;
+}
+
+.nav-left{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.logo-img{
+width:42px;
+height:42px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #8b5cf6;
+}
+
+.logo{
+font-size:20px;
+font-weight:bold;
+}
+
+.hamburger{
+font-size:28px;
+cursor:pointer;
+transition:.2s;
+}
+
+.hamburger:active{
+transform:scale(.9);
+}
+
+/* MENU */
+.menu{
+display:none;
+position:absolute;
+top:65px;
+right:15px;
+width:240px;
+background:#170028;
+border:1px solid #8b5cf6;
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 0 20px rgba(139,92,246,.5);
+z-index:9999;
+animation:menuFade .25s ease;
+}
+
+@keyframes menuFade{
+from{
+opacity:0;
+transform:translateY(-10px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.menu a{
+display:block;
+padding:14px;
+color:white;
+text-decoration:none;
+border-bottom:1px solid rgba(255,255,255,.08);
+transition:.2s;
+}
+
+.menu a:hover{
+background:#24003d;
+}
+
+/* BANNER */
+.banner img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+/* CATEGORY */
+.category{
+display:flex;
+gap:8px;
+padding:12px;
+overflow-x:auto;
+scroll-behavior:smooth;
+}
+
+.category::-webkit-scrollbar{
+display:none;
+}
+
+.category button{
+padding:10px 16px;
+border:none;
+border-radius:12px;
+background:#7c3aed;
+color:white;
+font-weight:bold;
+cursor:pointer;
+font-size:13px;
+min-width:95px;
+transition:.25s;
+animation:fadeIn .4s ease;
+}
+
+.category button:hover{
+transform:scale(1.06);
+background:#8b5cf6;
+box-shadow:0 0 18px rgba(139,92,246,.5);
+}
+
+.category button:active{
+transform:scale(.94);
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(10px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* PRODUCTS */
+.products{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;
+padding:14px;
+}
+
+.card{
+background:#160025;
+border-radius:20px;
+overflow:hidden;
+border:1px solid #8b5cf6;
+animation:fadeIn .4s ease;
+transition:.25s;
+}
+
+.card:hover{
+transform:translateY(-4px);
+box-shadow:0 0 20px rgba(139,92,246,.35);
+}
+
+.card img{
+width:100%;
+height:130px;
+object-fit:cover;
+}
+
+.card-content{
+padding:12px;
+}
+
+.price{
+margin:8px 0;
+opacity:.8;
+}
+
+.btn{
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+background:#7c3aed;
+color:white;
+font-weight:bold;
+cursor:pointer;
+transition:.2s;
+}
+
+.btn:hover{
+background:#8b5cf6;
+}
+
+.btn:active{
+transform:scale(.95);
+}
+
+/* OVERLAY */
+.overlay{
+display:none;
+position:fixed;
+inset:0;
+background:#090014;
+z-index:99999;
+overflow:auto;
+padding:20px;
+animation:fadeIn .2s ease;
+}
+
+.popup{
+max-width:420px;
+margin:auto;
+margin-top:40px;
+background:#150025;
+padding:22px;
+border-radius:24px;
+border:1px solid #8b5cf6;
+animation:fadeIn .25s ease;
+}
+
+.popup h2{
+margin-bottom:14px;
+text-align:center;
+}
+
+.popup input{
+width:100%;
+padding:13px;
+margin-bottom:12px;
+border:none;
+border-radius:12px;
+background:#25003d;
+color:white;
+}
+
+/* QRIS */
+.qris{
+width:100%;
+max-width:340px;
+display:block;
+margin:18px auto;
+border-radius:20px;
+box-shadow:0 0 30px rgba(139,92,246,.6);
+}
+
+/* UPLOAD */
+.upload-box{
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+height:120px;
+border:2px dashed #8b5cf6;
+border-radius:20px;
+cursor:pointer;
+margin-top:15px;
+background:#220033;
+gap:8px;
+transition:.2s;
+}
+
+.upload-box:hover{
+transform:scale(1.02);
+}
+
+.upload-icon{
+font-size:38px;
+}
+
+/* BUTTON */
+.btn-full{
+width:100%;
+padding:13px;
+margin-top:15px;
+border:none;
+border-radius:14px;
+background:#7c3aed;
+color:white;
+font-weight:bold;
+cursor:pointer;
+transition:.2s;
+}
+
+.btn-full:hover{
+background:#8b5cf6;
+}
+
+.btn-full:active{
+transform:scale(.96);
+}
+
+/* CREDITS */
+.credits{
+position:fixed;
+bottom:10px;
+left:50%;
+transform:translateX(-50%);
+padding:8px 14px;
+background:rgba(124,58,237,.15);
+border:1px solid #8b5cf6;
+border-radius:40px;
+font-size:12px;
+backdrop-filter:blur(6px);
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+
+<div class="nav-left">
+
+<img
+class="logo-img"
+id="logoImage"
+src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png"
+>
+
+<div class="logo">
+IPUNGG SHOP
+</div>
+
+</div>
+
+<div class="hamburger" onclick="toggleMenu()">☰</div>
+
+<div class="menu" id="menu">
+
+<a id="waLink" href="#">
+📞 WhatsApp Admin
+</a>
+
+<a id="channelLink" href="#">
+📢 Saluran Admin
+</a>
+
+<a id="groupLink" href="#">
+👥 Grup Bot
+</a>
+
+<a href="admin.html">
+⚙️ Dashboard Admin
+</a>
+
+</div>
+
+</nav>
+
+<!-- BANNER -->
+<div class="banner">
+
+<img
+id="bannerImage"
+src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200"
+>
+
+</div>
+
+<!-- CATEGORY -->
+<div class="category" id="categoryBox"></div>
+
+<!-- PRODUCTS -->
+<div class="products" id="products"></div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay">
+
+<div class="popup">
+
+<!-- FORM -->
+<div id="formStep">
+
+<h2>FORM ORDER</h2>
+
+<input type="text" id="nama" placeholder="Nama Anda">
+
+<input type="text" id="product" readonly>
+
+<input type="text" id="date" readonly>
+
+<button class="btn-full" onclick="goQRIS()">
+BAYAR SEKARANG
+</button>
+
+</div>
+
+<!-- QRIS -->
+<div id="qrisStep" style="display:none;">
+
+<h2>
+QRIS PAYMENT
+</h2>
+
+<img
+class="qris"
+id="qrisImage"
+src="https://img2.pixhost.to/images/7739/723666370_elaina-1778206415636.jpg"
+>
+
+<label for="proof" class="upload-box">
+
+<div class="upload-icon">
+📷
+</div>
+
+<p id="uploadText">
+Upload Bukti Pembayaran
+</p>
+
+</label>
+
+<input
+type="file"
+id="proof"
+accept="image/*"
+style="display:none;"
+>
+
+<button class="btn-full" onclick="sendWA()">
+KIRIM KE ADMIN
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="credits">
+© Mezuki X Ipungg - 2026
+</div>
+
+<script>
+
+/* DEFAULT STORAGE */
+if(!localStorage.getItem("products")){
+localStorage.setItem("products","[]");
+}
+
+if(!localStorage.getItem("categories")){
+localStorage.setItem(
+"categories",
+JSON.stringify([])
+);
+}
+
+let proofURL = "";
+
+/* BACK BUTTON FIX */
+history.pushState(null,null,location.href);
+
+window.addEventListener("popstate",function(){
+
+let overlay =
+document.getElementById("overlay");
+
+if(overlay.style.display==="block"){
+
+overlay.style.display="none";
+
+history.pushState(null,null,location.href);
+
+}
+
+});
+
+/* MENU */
+function toggleMenu(){
+
+let menu =
+document.getElementById("menu");
+
+menu.style.display =
+menu.style.display==="block"
+?"none"
+:"block";
+
+}
+
+/* SETTINGS */
+function loadSettings(){
+
+let logo =
+localStorage.getItem("logo");
+
+if(logo){
+document.getElementById("logoImage").src=logo;
+}
+
+let banner =
+localStorage.getItem("banner");
+
+if(banner){
+document.getElementById("bannerImage").src=banner;
+}
+
+let qris =
+localStorage.getItem("qris");
+
+if(qris){
+document.getElementById("qrisImage").src=qris;
+}
+
+let wa =
+localStorage.getItem("wa");
+
+if(wa){
+document.getElementById("waLink").href=
+"https://wa.me/"+wa;
+}
+
+let ch =
+localStorage.getItem("channel");
+
+if(ch){
+document.getElementById("channelLink").href=ch;
+}
+
+let gr =
+localStorage.getItem("group");
+
+if(gr){
+document.getElementById("groupLink").href=gr;
+}
+
+}
+
+/* CATEGORY */
+function loadCategories(){
+
+let data =
+JSON.parse(localStorage.getItem("categories")) || [];
+
+let box =
+document.getElementById("categoryBox");
+
+box.innerHTML = `
+<button onclick="filterProducts('all')">
+SEMUA
+</button>
+`;
+
+data.forEach(cat=>{
+
+let slug =
+cat.toLowerCase()
+.trim()
+.replace(/\s+/g,"-");
+
+box.innerHTML += `
+<button onclick="filterProducts('${slug}')">
+${cat.toUpperCase()}
+</button>
+`;
+
+});
+
+}
+
+/* PRODUCTS */
+function loadProducts(){
+
+let data =
+JSON.parse(localStorage.getItem("products")) || [];
+
+/* PIN PALING ATAS */
+data.sort((a,b)=>
+(b.pin===true)-(a.pin===true)
+);
+
+let box =
+document.getElementById("products");
+
+box.innerHTML="";
+
+data.forEach((p,index)=>{
+
+let category =
+(p.category || "")
+.toLowerCase()
+.trim()
+.replace(/\s+/g,"-");
+
+box.innerHTML += `
+
+<div 
+class="card item"
+data-category="${category}"
+data-pin="${p.pin}"
+>
+
+<img src="${p.image}">
+
+<div class="card-content">
+
+<h3>
+${p.pin ? "⭐ " : ""}
+${p.name}
+</h3>
+
+<div class="price">
+${p.price}
+</div>
+
+<button
+class="btn"
+onclick="buyProduct('${p.name}')"
+>
+ORDER
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+/* DEFAULT */
+filterProducts("all");
+
+}
+
+/* FILTER */
+function filterProducts(category){
+
+category =
+category
+.toLowerCase()
+.trim()
+.replace(/\s+/g,"-");
+
+let items =
+document.querySelectorAll(".item");
+
+items.forEach(item=>{
+
+/* SEMUA = PIN ONLY */
+if(category==="all"){
+
+if(item.dataset.pin==="true"){
+
+item.style.display="block";
+
+}else{
+
+item.style.display="none";
+
+}
+
+}
+
+/* CATEGORY */
+else if(
+item.dataset.category===category
+){
+
+item.style.display="block";
+
+}
+
+else{
+
+item.style.display="none";
+
+}
+
+});
+
+}
+
+/* BUY */
+function buyProduct(name){
+
+document.getElementById("overlay").style.display="block";
+
+document.getElementById("formStep").style.display="block";
+
+document.getElementById("qrisStep").style.display="none";
+
+document.getElementById("product").value=
+"Produk : "+name;
+
+document.getElementById("date").value=
+"Tanggal : "+
+new Date().toLocaleDateString("id-ID");
+
+history.pushState({},"","");
+
+}
+
+/* NEXT QRIS */
+function goQRIS(){
+
+document.getElementById("formStep").style.display="none";
+
+document.getElementById("qrisStep").style.display="block";
+
+}
+
+/* SUPER FAST IMGBB */
+document.getElementById("proof")
+.addEventListener("change", function(e){
+
+let file = e.target.files[0];
+
+if(!file) return;
+
+document.getElementById("uploadText")
+.innerText = "Uploaded ✅";
+
+(async()=>{
+
+let formData = new FormData();
+
+formData.append("image", file);
+
+try{
+
+let res = await fetch(
+"https://api.imgbb.com/1/upload?key=056a71582440fe6b784d01f9a15eddcb",
+{
+method:"POST",
+body:formData
+}
+);
+
+let data = await res.json();
+
+proofURL =
+data?.data?.url || "";
+
+}catch(err){
+
+console.log(err);
+
+}
+
+})();
+
+});
+
+/* SEND WA */
+function sendWA(){
+
+let nama =
+document.getElementById("nama").value;
+
+let product =
+document.getElementById("product").value;
+
+let date =
+document.getElementById("date").value;
+
+let wa =
+localStorage.getItem("wa")
+|| "6285198959920";
+
+let text =
+`🧾 FORMAT ORDER
+
+Nama : ${nama}
+${product}
+${date}
+*METODE PAYMENT : QRIS*
+
+📎 Bukti Pembayaran :
+${proofURL || "Sedang Upload..."}`;
+
+window.open(
+"https://wa.me/"+wa+
+"?text="+encodeURIComponent(text),
+"_blank"
+);
+
+}
+
+/* INIT */
+loadSettings();
+loadCategories();
+loadProducts();
+
+</script>
+
+</body>
+  </html>
