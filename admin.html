@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADMIN PANEL IPUNGG</title>
+
+<style>
+
+body{
+margin:0;
+padding:20px;
+font-family:Arial,sans-serif;
+background:#090014;
+color:white;
+}
+
+.box{
+background:#150025;
+border:1px solid #8b5cf6;
+padding:18px;
+border-radius:18px;
+margin-bottom:15px;
+animation:fade .3s ease;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(10px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+input,select{
+width:100%;
+padding:12px;
+margin:6px 0;
+border:none;
+border-radius:10px;
+background:#25003d;
+color:white;
+outline:none;
+}
+
+.btn{
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+background:#7c3aed;
+color:white;
+font-weight:bold;
+cursor:pointer;
+margin-top:8px;
+transition:.2s;
+}
+
+.btn:hover{
+background:#8b5cf6;
+}
+
+.btn:active{
+transform:scale(.96);
+}
+
+.list{
+margin-top:10px;
+background:#1a002a;
+border-radius:12px;
+padding:10px;
+}
+
+.item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:10px;
+border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.del{
+background:red;
+border:none;
+color:white;
+padding:6px 10px;
+border-radius:8px;
+cursor:pointer;
+}
+
+.hidden{
+display:none;
+}
+
+label{
+display:block;
+margin-top:10px;
+}
+
+small{
+opacity:.7;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="login" class="box">
+
+<h2>🔐 LOGIN ADMIN</h2>
+
+<input type="password" id="pass" placeholder="Password">
+
+<button class="btn" onclick="login()">
+LOGIN
+</button>
+
+</div>
+
+<!-- DASHBOARD -->
+<div id="dash" class="hidden">
+
+<h2>⚙️ DASHBOARD ADMIN</h2>
+
+<!-- LOGO -->
+<div class="box">
+
+<h3>🖼 Logo</h3>
+
+<input id="logo" placeholder="URL Logo">
+
+<button class="btn" onclick="saveLogo()">
+SIMPAN
+</button>
+
+</div>
+
+<!-- BANNER -->
+<div class="box">
+
+<h3>🖼 Banner</h3>
+
+<input id="banner" placeholder="URL Banner">
+
+<button class="btn" onclick="saveBanner()">
+SIMPAN
+</button>
+
+</div>
+
+<!-- QRIS -->
+<div class="box">
+
+<h3>💳 QRIS</h3>
+
+<input id="qris" placeholder="URL QRIS">
+
+<button class="btn" onclick="saveQRIS()">
+SIMPAN
+</button>
+
+</div>
+
+<!-- WA -->
+<div class="box">
+
+<h3>📞 WhatsApp Admin</h3>
+
+<input id="wa" placeholder="628xxxx">
+
+<button class="btn" onclick="saveWA()">
+SIMPAN
+</button>
+
+</div>
+
+<!-- CHANNEL -->
+<div class="box">
+
+<h3>📢 Channel</h3>
+
+<input id="channel" placeholder="Link Channel">
+
+<button class="btn" onclick="saveChannel()">
+SIMPAN
+</button>
+
+</div>
+
+<!-- GROUP -->
+<div class="box">
+
+<h3>👥 Group</h3>
+
+<input id="group" placeholder="Link Group">
+
+<button class="btn" onclick="saveGroup()">
+SIMPAN
+</button>
+
+</div>
+
+<!-- CATEGORY -->
+<div class="box">
+
+<h3>📁 Kategori</h3>
+
+<input id="cat" placeholder="Tambah kategori">
+
+<button class="btn" onclick="addCat()">
+TAMBAH
+</button>
+
+<div class="list" id="catList"></div>
+
+</div>
+
+<!-- PRODUCT -->
+<div class="box">
+
+<h3>🛒 Produk</h3>
+
+<input id="pname" placeholder="Nama Produk">
+
+<input id="pprice" placeholder="Harga Produk">
+
+<input id="pimg" placeholder="URL Gambar">
+
+<select id="pcat"></select>
+
+<!-- FEATURED -->
+<label>
+
+<input type="checkbox" id="featured">
+
+Tampilkan di SEMUA
+
+</label>
+
+<!-- PIN -->
+<label>
+
+<input type="checkbox" id="pin">
+
+Pin Produk
+
+</label>
+
+<button class="btn" onclick="addProduct()">
+TAMBAH PRODUK
+</button>
+
+<div class="list" id="productList"></div>
+
+</div>
+
+<!-- PASSWORD -->
+<div class="box">
+
+<h3>🔑 Ganti Password</h3>
+
+<input type="password" id="newpass">
+
+<button class="btn" onclick="changePass()">
+UBAH PASSWORD
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* INIT */
+if(!localStorage.getItem("adminPass")){
+localStorage.setItem("adminPass","1234");
+}
+
+if(!localStorage.getItem("products")){
+localStorage.setItem("products","[]");
+}
+
+if(!localStorage.getItem("categories")){
+localStorage.setItem(
+"categories",
+JSON.stringify([])
+);
+}
+
+/* LOGIN */
+function login(){
+
+let p =
+document.getElementById("pass").value;
+
+if(
+p===localStorage.getItem("adminPass")
+){
+
+document.getElementById("login")
+.style.display="none";
+
+document.getElementById("dash")
+.classList.remove("hidden");
+
+loadAll();
+
+}else{
+
+alert("Password salah");
+
+}
+
+}
+
+/* SETTINGS */
+function saveLogo(){
+
+localStorage.setItem(
+"logo",
+document.getElementById("logo").value
+);
+
+alert("Logo tersimpan");
+
+}
+
+function saveBanner(){
+
+localStorage.setItem(
+"banner",
+document.getElementById("banner").value
+);
+
+alert("Banner tersimpan");
+
+}
+
+function saveQRIS(){
+
+localStorage.setItem(
+"qris",
+document.getElementById("qris").value
+);
+
+alert("QRIS tersimpan");
+
+}
+
+function saveWA(){
+
+localStorage.setItem(
+"wa",
+document.getElementById("wa").value
+);
+
+alert("WA tersimpan");
+
+}
+
+function saveChannel(){
+
+localStorage.setItem(
+"channel",
+document.getElementById("channel").value
+);
+
+alert("Channel tersimpan");
+
+}
+
+function saveGroup(){
+
+localStorage.setItem(
+"group",
+document.getElementById("group").value
+);
+
+alert("Group tersimpan");
+
+}
+
+/* CATEGORY */
+function addCat(){
+
+let c =
+document.getElementById("cat")
+.value
+.toLowerCase()
+.trim();
+
+if(!c)return;
+
+let data =
+JSON.parse(
+localStorage.getItem("categories")
+);
+
+data.push(c);
+
+localStorage.setItem(
+"categories",
+JSON.stringify(data)
+);
+
+document.getElementById("cat").value="";
+
+loadAll();
+
+}
+
+function delCat(i){
+
+let data =
+JSON.parse(
+localStorage.getItem("categories")
+);
+
+data.splice(i,1);
+
+localStorage.setItem(
+"categories",
+JSON.stringify(data)
+);
+
+loadAll();
+
+}
+
+/* PRODUCT */
+function addProduct(){
+
+let data =
+JSON.parse(
+localStorage.getItem("products")
+);
+
+data.push({
+
+name:
+document.getElementById("pname").value,
+
+price:
+document.getElementById("pprice").value,
+
+image:
+document.getElementById("pimg").value,
+
+category:
+document.getElementById("pcat").value,
+
+featured:
+document.getElementById("featured").checked,
+
+pin:
+document.getElementById("pin").checked
+
+});
+
+localStorage.setItem(
+"products",
+JSON.stringify(data)
+);
+
+/* RESET */
+document.getElementById("pname").value="";
+document.getElementById("pprice").value="";
+document.getElementById("pimg").value="";
+document.getElementById("featured").checked=false;
+document.getElementById("pin").checked=false;
+
+loadAll();
+
+}
+
+function delProduct(i){
+
+let data =
+JSON.parse(
+localStorage.getItem("products")
+);
+
+data.splice(i,1);
+
+localStorage.setItem(
+"products",
+JSON.stringify(data)
+);
+
+loadAll();
+
+}
+
+/* LOAD */
+function loadAll(){
+
+/* CATEGORY */
+let cat =
+JSON.parse(
+localStorage.getItem("categories")
+);
+
+let catList =
+document.getElementById("catList");
+
+let select =
+document.getElementById("pcat");
+
+catList.innerHTML="";
+select.innerHTML="";
+
+cat.forEach((c,i)=>{
+
+catList.innerHTML += `
+
+<div class="item">
+
+${c}
+
+<button
+class="del"
+onclick="delCat(${i})"
+>
+
+X
+
+</button>
+
+</div>
+
+`;
+
+select.innerHTML += `
+<option value="${c}">
+${c}
+</option>
+`;
+
+});
+
+/* PRODUCT */
+let prod =
+JSON.parse(
+localStorage.getItem("products")
+);
+
+let list =
+document.getElementById("productList");
+
+list.innerHTML="";
+
+/* SORT PIN */
+prod.sort((a,b)=>
+(b.pin===true)-(a.pin===true)
+);
+
+prod.forEach((p,i)=>{
+
+list.innerHTML += `
+
+<div class="item">
+
+<div>
+
+${p.pin ? "⭐ " : ""}
+
+${p.name}
+
+<br>
+
+<small>
+
+${p.category}
+
+${p.featured ? " • SEMUA" : ""}
+
+</small>
+
+</div>
+
+<button
+class="del"
+onclick="delProduct(${i})"
+>
+
+X
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+/* PASSWORD */
+function changePass(){
+
+localStorage.setItem(
+"adminPass",
+document.getElementById("newpass").value
+);
+
+alert("Password diubah");
+
+}
+
+</script>
+
+</body>
+  </html>
